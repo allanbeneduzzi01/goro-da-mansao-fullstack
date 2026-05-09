@@ -19,7 +19,7 @@ function App() {
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch('http://localhost:3002/api/products');
+      const res = await fetch('/api/products');
       const data = await res.json();
       setProducts(data);
     } catch (err) {
@@ -64,7 +64,7 @@ function App() {
       items: cart
     };
     try {
-      const response = await fetch('http://localhost:3002/api/orders', {
+      const response = await fetch('/api/orders', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
@@ -87,7 +87,7 @@ function App() {
     const password = formData.get('password');
     
     try {
-      const res = await fetch('http://localhost:3002/api/login', {
+      const res = await fetch('/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
@@ -106,7 +106,7 @@ function App() {
 
   const updateProductPrice = async (id, newPrice) => {
     try {
-      const res = await fetch(`http://localhost:3002/api/products/${id}`, {
+      const res = await fetch(`/api/products/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ price: parseFloat(newPrice) })

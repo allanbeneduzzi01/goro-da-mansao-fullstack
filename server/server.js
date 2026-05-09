@@ -3,7 +3,7 @@ import cors from 'cors';
 import { initDb, Order, Product } from './database.js';
 
 const app = express();
-const PORT = process.env.PORT || 3002;
+const PORT = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(express.json());
@@ -71,9 +71,20 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'Goró da Mansão Backend is running.' });
 });
 
-// Start Server
-initDb().then(() => {
-  app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-  });
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url}`);
+  next();
 });
+
+// Initialize DB
+initDb().catch(err => console.error('DB Init Error:', err));
+
+// Export for Vercel
+export default app;
+
+// Start Server locally
+if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server is running on http://0.0.0.0:${PORT}`);
+  });
+}
